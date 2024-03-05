@@ -23,7 +23,7 @@
         android:id="@+id/connectBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="96dp"
         android:layout_marginEnd="144dp"
         android:text="Abschicken"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,10 +31,10 @@
 
     <EditText
         android:id="@+id/userInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
-        android:layout_marginEnd="100dp"
+        android:layout_width="236dp"
+        android:layout_height="78dp"
+        android:layout_marginTop="116dp"
+        android:layout_marginEnd="88dp"
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"

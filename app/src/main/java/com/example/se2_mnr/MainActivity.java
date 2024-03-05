@@ -1,6 +1,8 @@
 package com.example.se2_mnr;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         userInput = findViewById(R.id.userInput);
         serverResponse = findViewById(R.id.serverResponse);
         connectBtn = findViewById(R.id.connectBtn);
+        connectBtn.setOnClickListener(connect);
     }
 
     /**
@@ -45,29 +49,32 @@ public class MainActivity extends AppCompatActivity {
      * connects to "se2-submission.aau.at" and sends value in the input field (matrikelnummer)
      * response is shown in serverResponse TextView
      */
-    public void connect(){
-        new Thread(() -> {
-            try {
-                Socket TcpConnection = new Socket("se2-submission.aau.at", 20080);
+    public View.OnClickListener connect = new View.OnClickListener(){
+        public void onClick(View v){
+            new Thread(() -> {
+                try {
+                    Socket TcpConnection = new Socket("se2-submission.aau.at", 20080);
 
-                BufferedWriter sendOut = new BufferedWriter(new OutputStreamWriter(TcpConnection.getOutputStream()));
-                String matrikelnummer = userInput.getText().toString();
-                sendOut.write(matrikelnummer);
+                    PrintWriter sendOut = new PrintWriter( new BufferedWriter(new OutputStreamWriter(TcpConnection.getOutputStream())));
+                    String matrikelnummer = userInput.getText().toString();
+                    sendOut.write(matrikelnummer);
 
-                BufferedReader readerIn = new BufferedReader(new InputStreamReader(TcpConnection.getInputStream()));
-                String received = readerIn.readLine();
+                    BufferedReader readerIn = new BufferedReader(new InputStreamReader(TcpConnection.getInputStream()));
+                    String received = readerIn.readLine();
+                    Log.e("message", received);
 
-                runOnUiThread(() -> {serverResponse.setText(received);});
+                    runOnUiThread(() -> {serverResponse.setText(received);});
 
-                sendOut.flush();
-                sendOut.close();
-                readerIn.close();
-                TcpConnection.close();
+                    sendOut.flush();
+                    sendOut.close();
+                    readerIn.close();
+                    TcpConnection.close();
 
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    };
 }
