@@ -59,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
 
                 runOnUiThread(() -> {serverResponse.setText(received);});
 
+                sendOut.flush();
+                sendOut.close();
+                readerIn.close();
+                TcpConnection.close();
+
 
             } catch (IOException e) {
                 e.printStackTrace();
