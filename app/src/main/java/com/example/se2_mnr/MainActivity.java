@@ -1,5 +1,7 @@
 package com.example.se2_mnr;
 
+import static java.util.stream.Collectors.toList;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +23,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -96,10 +99,13 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             Log.i("solveBtn", "clicked");
 
-            char[] matrikelnummer = userInput.getText().toString().toCharArray();
+            String matrikelnummer = userInput.getText().toString();
 
-            String result = new String(matrikelnummer).chars()
+            String result = matrikelnummer
+                    .chars()
                     .map(x -> x%2==0 ? x+48 : x)
+                    .mapToObj(x -> (char) x)
+                    .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
                     .toString();
 
             serverResponse.setText(result);
