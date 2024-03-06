@@ -50,18 +50,23 @@ public class MainActivity extends AppCompatActivity {
      * response is shown in serverResponse TextView
      */
     public View.OnClickListener connect = new View.OnClickListener(){
+        @Override
         public void onClick(View v){
+            Log.i("connectBtn", "clicked");
             new Thread(() -> {
                 try {
                     Socket TcpConnection = new Socket("se2-submission.aau.at", 20080);
+                    Log.i("TcpClient", "created socket");
 
-                    PrintWriter sendOut = new PrintWriter( new BufferedWriter(new OutputStreamWriter(TcpConnection.getOutputStream())));
+                    PrintWriter sendOut = new PrintWriter( new OutputStreamWriter(TcpConnection.getOutputStream()), true);
+                    BufferedReader readerIn = new BufferedReader(new InputStreamReader(TcpConnection.getInputStream()));
+
                     String matrikelnummer = userInput.getText().toString();
                     sendOut.write(matrikelnummer);
+                    Log.i("TcpClient", "message sent: " + matrikelnummer);
 
-                    BufferedReader readerIn = new BufferedReader(new InputStreamReader(TcpConnection.getInputStream()));
                     String received = readerIn.readLine();
-                    Log.e("message", received);
+                    Log.i("TcpClient", received);
 
                     runOnUiThread(() -> {serverResponse.setText(received);});
 
@@ -72,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e("Failure", e.toString());
                 }
             }).start();
         }
