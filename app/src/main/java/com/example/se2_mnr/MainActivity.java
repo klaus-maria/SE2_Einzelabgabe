@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -99,16 +100,15 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             Log.i("solveBtn", "clicked");
 
-            String matrikelnummer = userInput.getText().toString();
+            char[] matrikelnummer = userInput.getText().toString().toCharArray();
+            char[] result = new char[matrikelnummer.length];
 
-            String result = matrikelnummer
-                    .chars()
-                    .map(x -> x%2==0 ? x+48 : x)
-                    .mapToObj(x -> (char) x)
-                    .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                    .toString();
+            for(int i=0; i<matrikelnummer.length;i++){
+                result[i] = (i%2==0) ? matrikelnummer[i] : (char)(matrikelnummer[i]+48);
+            }
 
-            serverResponse.setText(result);
+            serverResponse.setText(new String(result));
+            Log.i("solveBtn", new String(result));
 
 
         }
