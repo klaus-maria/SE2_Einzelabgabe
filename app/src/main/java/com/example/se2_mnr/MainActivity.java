@@ -20,12 +20,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText userInput;
     private TextView serverResponse;
-    private Button connectBtn;
+    private Button connectBtn, solveBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,10 @@ public class MainActivity extends AppCompatActivity {
         userInput = findViewById(R.id.userInput);
         serverResponse = findViewById(R.id.serverResponse);
         connectBtn = findViewById(R.id.connectBtn);
+        solveBtn = findViewById(R.id.solveBtn);
+
         connectBtn.setOnClickListener(connect);
+        solveBtn.setOnClickListener(solve);
     }
 
     /**
@@ -80,6 +84,27 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("Failure", e.toString());
                 }
             }).start();
+        }
+    };
+
+    /**
+     * called when "Rechnen" Button is clicked
+     * converts every second digit of the input field to ASCII characters
+     */
+    public View.OnClickListener solve = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.i("solveBtn", "clicked");
+
+            char[] matrikelnummer = userInput.getText().toString().toCharArray();
+
+            String result = new String(matrikelnummer).chars()
+                    .map(x -> x%2==0 ? x+48 : x)
+                    .toString();
+
+            serverResponse.setText(result);
+
+
         }
     };
 }
