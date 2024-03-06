@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                     BufferedReader readerIn = new BufferedReader(new InputStreamReader(TcpConnection.getInputStream()));
 
                     String matrikelnummer = userInput.getText().toString();
-                    sendOut.write(matrikelnummer);
+                    sendOut.println(matrikelnummer);
                     Log.i("TcpClient", "message sent: " + matrikelnummer);
 
                     String received = readerIn.readLine();
